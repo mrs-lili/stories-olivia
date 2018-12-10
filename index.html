@@ -1,25 +1,100 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="utf8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-        <title>Hello Javascript</title>
+<head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
+    <title>Hello Javascript</title>
 
+    <!--
+        Feuilles de style
+    -->
 
-    </head>
+    <link href="./node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <body>
-        <!-- 
-            Titre aliment" en JavaScript
-            ATTENTION ! Ne jamais faire ça pour un site web
+</head>
+
+<body>
+
+    <!-- 
+            Conteneur de page : responsive en plus !!
         -->
-        <h1 id="main-title"></h1>
 
-        <!-- Premier script Javascript -->
+    <div class="container">
+        <header>
+            <h1 id="main-title"></h1>
+        </header>
 
-        <script src="./assets/javascript/main.js"></script>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+           <!-- Brand: nom du menu-->
+            <a class="navbar-brand" href="#">Stories</a>
+            <!-- Bouton "burger"-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Stories-menu"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-    </body>
+            <!-- Contenu des elements du menu-->
+            <div class="collapse navbar-collapse" id="nStories-menu">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link disabled" title="Acuueil" href="#">Accueil <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" title="Toutes les stories" href="#">Toutes les stories</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link disabled" title="Mes stories" href="#">Mes stories</a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Utilisateur
+                        </a>
+                        <!-- Options du menu utilisateur-->
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#">Action</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </li>
+                </ul>
+                <form class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Chercher" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Chercher</button>
+                </form>
+            </div>
+        </nav>
+
+        <!-- Docking de la SPA (Single Page Application) -->
+        <div app>
+            <!-- Ici, le contenu de l'application finale identifié par l'attribut "app"-->
+            <form id="loginForm" class="form-stacked">
+                <input type="text" name= "loginField" autocomplete="off" class ="form-control" placeholder="Votre Identifiant">
+                <input type="password" name="passwordField" autocomplete="off" class="form-control" placeholder="Votre mot de passe">
+
+                <button type="submit" id="btnLogin" class="btn btn-success" disabled>Connexion</button>
+
+            </form>
+        </div>
+
+        <footer>
+            &copy; Aélion 2018
+        </footer>
+
+    </div>
+
+    <!-- Premier script Javascript -->
+
+    <script src="./node_modules/jquery/dist/jquery.min.js"></script>
+    <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./src/user/login.class.js"></script>
+    <script src="./assets/javascript/main.js"></script>
+
+</body>
+
 </html>
