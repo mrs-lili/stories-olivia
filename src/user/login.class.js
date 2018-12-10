@@ -26,8 +26,14 @@ formListener(){
                 const password = $('[name="passwordField"]');
 
                 //Est-ce que les deux champs sont remplis
+                //Et longueur login > 5 caractères
+                //On peut enlever login.Val different de valeur vide, puisque on dit
+                //qu'il doit etre supérieur à 5 caractères
 
-                if (login.val() !== '' && password.val() !== ''){
+                if (
+                   // login.val() !== '' &&
+                    password.val() !== '' &&
+                    login.val().length >= 5){
                     // On peut activer le bouton
                     $('#btnLogin').removeAttr('disabled');
                 }else{
