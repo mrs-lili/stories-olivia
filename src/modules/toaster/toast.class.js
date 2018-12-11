@@ -53,11 +53,21 @@ export class Toast {
         // Affiche pendant un certain temps
         setTimeout(
             function () {
-                //Ici, quand on arrive au bout de l'intervalle de temps
-                toaster.remove();
-            },
-            this.duration * 1000
+                setTimeout(
+                    function () {
+                        toaster
+                            .addClass('fadeOutRightBig');
+                        //Ici, quand on arrive au bout de l'intervalle de temps
 
+                    },
+                    this.duration * 1000
+                );
+
+                //Ici, quand on arrive au bout de l'intervalle de temps
+
+                toaster.remove();
+
+            }
             /**
              * Dans index.html ->
              * <div class="tost danger">
