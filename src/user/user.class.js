@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-class User {
+export class User {
     constructor() { }
 
     /** Définit le username de l'utilisateur

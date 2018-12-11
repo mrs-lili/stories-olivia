@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-class Menu {
+export class Menu {
     constructor() {
         this.options = [
             { title: 'Accueil', active: 'always' },
@@ -106,19 +106,4 @@ _activate() {
 }
 }
 
-
-
-/**  _makeOptions(option) {
-
-    const item = null;
-
-    if (option.hasOwnProperty('title')) {
-        // link logic here*
-
-    } else {
-        //divider logic here
-    }
-}
-
-*/
 

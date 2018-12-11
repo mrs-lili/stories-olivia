@@ -3,7 +3,7 @@
  * @desc Affiche un toast (snackbar)
  */
 
-class Toast {
+export class Toast {
     constructor(params) {
         if (!params.hasOwnProperty('background')) {
 
@@ -27,42 +27,42 @@ class Toast {
             this.message = params.message;
         }
     }
-        setBackground(cssClass) {
-            this.backgroundClass = cssClass;
-        }
+    setBackground(cssClass) {
+        this.backgroundClass = cssClass;
+    }
 
-        setDuration(duration) {
-            this.duration = duration;
-        }
+    setDuration(duration) {
+        this.duration = duration;
+    }
 
-        toastIt() {
-            // Créée en mémoire un nouvel objet div dans le DOM (index.html)
-            const toaster = $('<div>');
+    toastIt() {
+        // Créée en mémoire un nouvel objet div dans le DOM (index.html)
+        const toaster = $('<div>');
 
-            // On lui ajoute les classes avec methodes jQuery
-            toaster
-                .addClass(this.backgroundClass)
-                .addClass('toast')
-                .html('<p>' + this.message + '</p>');
+        // On lui ajoute les classes avec methodes jQuery
+        toaster
+            .addClass(this.backgroundClass)
+            .addClass('toast')
+            .html('<p>' + this.message + '</p>');
 
-            // Ajoute le toaster au document lui-même
-            toaster.appendTo($('body'));
+        // Ajoute le toaster au document lui-même
+        toaster.appendTo($('body'));
 
-            // Affiche pendant un certain temps
-            setTimeout(
-                function () {
-                    //Ici, quand on arrive au bout de l'intervalle de temps
-                    toaster.remove();
-                },
-                this.duration * 1000
-            
+        // Affiche pendant un certain temps
+        setTimeout(
+            function () {
+                //Ici, quand on arrive au bout de l'intervalle de temps
+                toaster.remove();
+            },
+            this.duration * 1000
+
             /**
              * Dans index.html ->
              * <div class="tost danger">
              * <p>Désolé ce compte n'existe pas</p>
              * </div>
              */
-            
-                )
-        }
+
+        )
     }
+}
