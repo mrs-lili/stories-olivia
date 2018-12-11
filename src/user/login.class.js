@@ -78,8 +78,9 @@ class Login {
                     //On peut instancier un toast
                     const toast = new Toast(
                         {
-                            'message': 'Ce login ou ce mot de passe ne correspond à aucun utilisateur',
-                            'duration': 2
+                            message: 'Ce login ou ce mot de passe ne correspond à aucun utilisateur',
+                            duration: 2,
+                            background: 'danger'
                         }
                     );
                     toast.toastIt();

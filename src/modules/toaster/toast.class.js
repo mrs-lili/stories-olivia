@@ -36,14 +36,14 @@ class Toast {
         }
 
         toastIt() {
-            // Créée en mémoire un nouvel élément dans le DOM
+            // Créée en mémoire un nouvel objet div dans le DOM (index.html)
             const toaster = $('<div>');
 
-            // On lui ajoute les classes
+            // On lui ajoute les classes avec methodes jQuery
             toaster
                 .addClass(this.backgroundClass)
                 .addClass('toast')
-                .html(this.message);
+                .html('<p>' + this.message + '</p>');
 
             // Ajoute le toaster au document lui-même
             toaster.appendTo($('body'));
@@ -55,6 +55,14 @@ class Toast {
                     toaster.remove();
                 },
                 this.duration * 1000
-            )
+            
+            /**
+             * Dans index.html ->
+             * <div class="tost danger">
+             * <p>Désolé ce compte n'existe pas</p>
+             * </div>
+             */
+            
+                )
         }
     }

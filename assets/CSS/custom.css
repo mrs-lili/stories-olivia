@@ -10,8 +10,28 @@
         left: 50%;
 }
 
+.toast.warning {
+    color: #fff;
+    border: solid 1px #fff;
+}
+
 .toast.danger {
     background-color: rgba(231, 19, 19, 0.8);
     color: #fff;
     border: solid 1px #fff;
 }
+
+/**
+Si on veut que p en rouge ou un warning plutot qu'un toast
+*/ 
+
+.toast.danger p {
+    background-color: rgba(231, 19, 19, 0.8);
+}
+
+.toast.warning p {
+    background-color: rgba(231, 19, 19, 0.8);
+}
+
+/** Ne pas oublier de mettre warning plutot que danger dans le reste du code */
+
