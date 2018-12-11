@@ -342,7 +342,7 @@ var Toast = exports.Toast = function () {
             var toaster = $('<div>');
 
             // On lui ajoute les classes avec methodes jQuery
-            toaster.addClass(this.backgroundClass).addClass('toast').html('<p>' + this.message + '</p>');
+            toaster.addClass(this.backgroundClass).addClass('animated').addClass('fadeInDownBig').addClass('toast').html('<p>' + this.message + '</p>');
 
             // Ajoute le toaster au document lui-même
             toaster.appendTo($('body'));
