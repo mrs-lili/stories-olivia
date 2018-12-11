@@ -8,3 +8,4 @@ title.innerHTML = 'Hello Javascript';
 
 // Créer une instance de Login
 const login = new Login();
+

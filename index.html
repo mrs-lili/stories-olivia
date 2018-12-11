@@ -37,7 +37,7 @@
             </button>
 
             <!-- Contenu des elements du menu-->
-            <div class="collapse navbar-collapse" id="nStories-menu">
+            <div class="collapse navbar-collapse" id="Stories-menu">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link disabled" title="Acuueil" href="#">Accueil <span class="sr-only">(current)</span></a>
@@ -51,16 +51,16 @@
                     </li>
 
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                        <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             Utilisateur
                         </a>
                         <!-- Options du menu utilisateur-->
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
+                        <div id="userMenuOptions" class="dropdown-menu hidden" aria-labelledby="navbarDropdown">
+                           <!-- <a class="dropdown-item" href="#">Action</a>
                             <a class="dropdown-item" href="#">Another action</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <a class="dropdown-item" href="#">Something else here</a> -->
                         </div>
                     </li>
                 </ul>
@@ -94,6 +94,7 @@
     <script src="./node_modules/jquery/dist/jquery.min.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="./src/modules/toaster/toast.class.js"></script>
+    <script src="./src/menu/menu.class.js"></script>
     <script src="./src/user/user.class.js"></script>
     <script src="./src/user/login.class.js"></script>
     <script src="./assets/javascript/main.js"></script>

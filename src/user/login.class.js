@@ -69,6 +69,16 @@ class Login {
                 // Gère l'authentification: dit s'il est VRAI ou FAUX
                 if (user.authenticate()) {
                     console.log('Ok, tu peux y aller');
+
+                    // Instancie le menu...
+
+                    const menu = new Menu();
+                    menu.setUser(user);
+                    let option = this.option;
+
+
+
+
                 } else {
                     console.log('KO, t\'as pas le droit !');
                     login.val();
