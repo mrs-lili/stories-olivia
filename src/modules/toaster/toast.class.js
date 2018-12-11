@@ -42,6 +42,8 @@ export class Toast {
         // On lui ajoute les classes avec methodes jQuery
         toaster
             .addClass(this.backgroundClass)
+            .addClass('animated')
+            .addClass('fadeInDownBig')
             .addClass('toast')
             .html('<p>' + this.message + '</p>');
 
