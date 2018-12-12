@@ -350,14 +350,14 @@ var Toast = exports.Toast = function () {
             // Affiche pendant un certain temps
             setTimeout(function () {
                 setTimeout(function () {
-                    toaster.addClass('fadeOutRightBig');
+                    toaster.addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
                     //Ici, quand on arrive au bout de l'intervalle de temps
                 }, this.duration * 1000);
 
                 //Ici, quand on arrive au bout de l'intervalle de temps
 
                 toaster.remove();
-            }
+            }, this.duration * 1000
             /**
              * Dans index.html ->
              * <div class="tost danger">

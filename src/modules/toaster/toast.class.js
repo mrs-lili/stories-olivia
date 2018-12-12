@@ -56,7 +56,7 @@ export class Toast {
                 setTimeout(
                     function () {
                         toaster
-                            .addClass('fadeOutRightBig');
+                            .addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
                         //Ici, quand on arrive au bout de l'intervalle de temps
 
                     },
@@ -67,7 +67,8 @@ export class Toast {
 
                 toaster.remove();
 
-            }
+            },
+            this.duration * 1000
             /**
              * Dans index.html ->
              * <div class="tost danger">
@@ -75,6 +76,6 @@ export class Toast {
              * </div>
              */
 
-        )
+        );
     }
 }
