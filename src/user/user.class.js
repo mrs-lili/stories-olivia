@@ -32,6 +32,13 @@ export class User {
     authenticate() {
         if (this.userName === 'oliviaverove' && this.password === 'ov') {
             this.group = 'Administrateur';
+            //Ajout de l'utilisateur dans localStorage
+            const persistentUser = {
+                userName: this.userName,
+                group: this.group
+            };
+            localStorage.setItem('storieUser', JSON.stringify(persistentUser));
+
             return true;
         }
         return false;

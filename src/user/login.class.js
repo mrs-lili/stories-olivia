@@ -90,7 +90,11 @@ export class Login {
 
                     const menu = new Menu();
                     menu.setUser(user);
-                    let option = this.option;
+
+                    // On va essayer d'aller vers une autre page
+                    document.location.replace('#/mystories');
+
+                  //  let option = this.option;
 
 
 
