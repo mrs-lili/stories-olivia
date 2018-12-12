@@ -53,22 +53,22 @@ export class Toast {
         // Affiche pendant un certain temps
         setTimeout(
             function () {
-                setTimeout(
-                    function () {
-                        toaster
-                            .addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
-                        //Ici, quand on arrive au bout de l'intervalle de temps
-
-                    },
-                    this.duration * 1000
-                );
-
-                //Ici, quand on arrive au bout de l'intervalle de temps
-
-                toaster.remove();
-
+                toaster
+                    .removeClass('fadeOutRightBig')
+                    .addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
+                //Ici, quand on arrive au bout de l'intervalle de temps, on va attendre pour le supprimer
+                setTimeout(function (){
+                    //Ici, quand on arrive au bout de l'intervalle de temps
+                    toaster.remove();
+                }, 1500);
             },
+
             this.duration * 1000
+          );
+    }
+}
+
+
             /**
              * Dans index.html ->
              * <div class="tost danger">
@@ -76,6 +76,3 @@ export class Toast {
              * </div>
              */
 
-        );
-    }
-}

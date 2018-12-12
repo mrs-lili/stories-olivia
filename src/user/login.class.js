@@ -11,9 +11,12 @@ export class Login {
         // Modifier le titre de la page
         $('#main-title').html('Identifiez-vous');
 
-        //Définition des attributs
+
+        /** //Définition des attributs
         this.login = $('[name="loginField"]');
         this.password = $('[name="passwordField"]');
+        On peut plus le faire ici à cause de la vue donc faut le déplacer !! 
+        */
 
         //Définition du listener sur le formulaire
         this.formListener();
@@ -28,11 +31,11 @@ export class Login {
 
     formListener() {
 
-        let login = this.login;
-        let password = this.password;
+        const app = $('[app]');
 
-        $('#loginForm').on(
+        app.on(
             'keyup',
+            '#loginForm', // Délégation d'événement...
             // Callback: fonction appelée si l'événement défini survient
             function (event) {
 
@@ -40,6 +43,10 @@ export class Login {
                 //Et longueur login > 5 caractères
                 //On peut enlever login.Val different de valeur vide, puisque on dit
                 //qu'il doit etre supérieur à 5 caractères
+
+                //Définition des attributs
+                let login = $('[name="loginField"]');
+                let password = $('[name="passwordField"]');
 
                 if (
                     // login.val() !== '' &&
@@ -57,12 +64,16 @@ export class Login {
 
     submitListener() {
 
-        let login = this.login;
-        let password = this.password;
-
-        $('#loginForm').on(
+        const app = $('[app]');
+        app.on(
             'submit',
+            '#loginForm',
             function (event) {
+
+                //Définition des attributs
+                let login = $('[name="loginField"]');
+                let password = $('[name="passwordField"]');
+
                 event.preventDefault(); //Empêche l'action par défaut
 
                 //Instancie un nouvel utilisateur

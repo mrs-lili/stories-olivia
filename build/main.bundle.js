@@ -98,6 +98,10 @@
 
 var _login = __webpack_require__(/*! ./../../src/user/login.class */ "./src/user/login.class.js");
 
+var _loginController = __webpack_require__(/*! ../../src/user/login/views/loginController.class */ "./src/user/login/views/loginController.class.js");
+
+var _myStories = __webpack_require__(/*! ../../src/stories/myStories.class */ "./src/stories/myStories.class.js");
+
 var title = document.getElementById('main-title'); /**
                                                     * @name main.js
                                                     * @desc Point d'entrée principal dans l'application Javascript
@@ -105,8 +109,20 @@ var title = document.getElementById('main-title'); /**
 
 title.innerHTML = 'Hello Javascript';
 
+/* // @version  Passage par contrôleur
+// On créée une instance du contrôleur
+const controller = new LoginController();
+controller.getView(); //permet de contrôler qu'il fait bien ce qu'on veut. Si ca fonctionne on
+//verra dans console le code html, sinon erreur.
+
 // Créer une instance de Login
-var login = new _login.Login();
+// On le met après pour que ca fonctionne dans la vue
+const login = new Login(); */
+
+// Pour test, instanciation du contrôleur pour l'affichage des stories utilisateur
+
+var controller = new _myStories.MyStories();
+controller.getView();
 
 /***/ }),
 
@@ -349,27 +365,81 @@ var Toast = exports.Toast = function () {
 
             // Affiche pendant un certain temps
             setTimeout(function () {
+                toaster.removeClass('fadeOutRightBig').addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
+                //Ici, quand on arrive au bout de l'intervalle de temps, on va attendre pour le supprimer
                 setTimeout(function () {
-                    toaster.addClass('fadeOutRightBig'); //pour qu'il reparte avec style aussi
                     //Ici, quand on arrive au bout de l'intervalle de temps
-                }, this.duration * 1000);
-
-                //Ici, quand on arrive au bout de l'intervalle de temps
-
-                toaster.remove();
-            }, this.duration * 1000
-            /**
-             * Dans index.html ->
-             * <div class="tost danger">
-             * <p>Désolé ce compte n'existe pas</p>
-             * </div>
-             */
-
-            );
+                    toaster.remove();
+                }, 1500);
+            }, this.duration * 1000);
         }
     }]);
 
     return Toast;
+}();
+
+/**
+ * Dans index.html ->
+ * <div class="tost danger">
+ * <p>Désolé ce compte n'existe pas</p>
+ * </div>
+ */
+
+/***/ }),
+
+/***/ "./src/stories/myStories.class.js":
+/*!****************************************!*\
+  !*** ./src/stories/myStories.class.js ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @name MyStories
+ * @desc Contrôleur pour l'affichage des stories utilisateur
+ * @author Aélion
+ * @version 1.0.0
+ */
+var MyStories = exports.MyStories = function () {
+    function MyStories() {
+        _classCallCheck(this, MyStories);
+
+        // Définit la vue pour ce contrôleur
+        this.view = './src/stories/views/stories.view.html';
+    }
+
+    /**
+     * Méthode pour récupérer la vue à afficher
+     */
+
+
+    _createClass(MyStories, [{
+        key: 'getView',
+        value: function getView() {
+            // Récupère le placeholder de mon application
+            var app = $('[app]');
+
+            $.get(this.view,
+            // Callback appelée après que le fichier ait été chargé
+            function (viewContent) {
+                app.empty(); // Vide le contenu le cas échéant
+                app.html(viewContent);
+            });
+        }
+    }]);
+
+    return MyStories;
 }();
 
 /***/ }),
@@ -409,9 +479,11 @@ var Login = exports.Login = function () {
         // Modifier le titre de la page
         $('#main-title').html('Identifiez-vous');
 
-        //Définition des attributs
+        /** //Définition des attributs
         this.login = $('[name="loginField"]');
         this.password = $('[name="passwordField"]');
+        On peut plus le faire ici à cause de la vue donc faut le déplacer !! 
+        */
 
         //Définition du listener sur le formulaire
         this.formListener();
@@ -428,10 +500,9 @@ var Login = exports.Login = function () {
         key: 'formListener',
         value: function formListener() {
 
-            var login = this.login;
-            var password = this.password;
+            var app = $('[app]');
 
-            $('#loginForm').on('keyup',
+            app.on('keyup', '#loginForm', // Délégation d'événement...
             // Callback: fonction appelée si l'événement défini survient
             function (event) {
 
@@ -439,6 +510,10 @@ var Login = exports.Login = function () {
                 //Et longueur login > 5 caractères
                 //On peut enlever login.Val different de valeur vide, puisque on dit
                 //qu'il doit etre supérieur à 5 caractères
+
+                //Définition des attributs
+                var login = $('[name="loginField"]');
+                var password = $('[name="passwordField"]');
 
                 if (
                 // login.val() !== '' &&
@@ -454,10 +529,13 @@ var Login = exports.Login = function () {
         key: 'submitListener',
         value: function submitListener() {
 
-            var login = this.login;
-            var password = this.password;
+            var app = $('[app]');
+            app.on('submit', '#loginForm', function (event) {
 
-            $('#loginForm').on('submit', function (event) {
+                //Définition des attributs
+                var login = $('[name="loginField"]');
+                var password = $('[name="passwordField"]');
+
                 event.preventDefault(); //Empêche l'action par défaut
 
                 //Instancie un nouvel utilisateur
@@ -494,6 +572,66 @@ var Login = exports.Login = function () {
     }]);
 
     return Login;
+}();
+
+/***/ }),
+
+/***/ "./src/user/login/views/loginController.class.js":
+/*!*******************************************************!*\
+  !*** ./src/user/login/views/loginController.class.js ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @name LoginController
+ * @desc Contrôleur pour la gestion du formulaire de login
+ * @author Aélion
+ * @version */
+
+var LoginController = exports.LoginController = function () {
+    function LoginController() {
+        _classCallCheck(this, LoginController);
+
+        // Définit la vue pour ce contrôleur
+        this.view = './src/user/login/views/loginform.view.html';
+    }
+
+    /**
+     * Méthode pour récuperer la vue à afficher
+     * Il faut donc récuperer la vue, sous la forme d'élément html à injecter à notre page.
+     */
+
+    _createClass(LoginController, [{
+        key: 'getView',
+        value: function getView() {
+            // Récupère le placeholder de mon application
+            var app = $('[app]'); //on cherche quelque part dans le document qqch qui a l'attribut app
+            // Car on veut injecter notre contenu ici. On parle de "placeholder"
+
+            $.get(
+            // 2 parametres: ce qu'on veut récupérer (this.view) et met le contenu
+            // dans le parametre viewContent.
+            this.view, function (viewContent) {
+                // console.log(viewContent); <- pas necessaire
+                app.empty(); // Vide le contenu le cas échéant
+                app.html(viewContent); //on remplit
+            });
+        }
+    }]);
+
+    return LoginController;
 }();
 
 /***/ }),
