@@ -19,4 +19,10 @@ router
     .add(
         new Route('/mystories', 'MyStories', userService)
     )
+    .add(
+        new Route('/logout', 'LogoutController')
+    )
+    .add(
+        new Route('/error', )
+    )
     

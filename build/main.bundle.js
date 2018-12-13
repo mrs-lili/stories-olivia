@@ -111,7 +111,64 @@ var router = new _router.Router(); /**
 
 var userService = new _userService.UserService(); //garde-fou qui va etre mis sur chaque route quand on a besoin,
 //C'est lui qui dit ce qu'on a le droit de faire
-router.add(new _route.Route('/', 'LoginController', userService)).add(new _route.Route('/mystories', 'MyStories', userService));
+router.add(new _route.Route('/', 'LoginController', userService)).add(new _route.Route('/mystories', 'MyStories', userService)).add(new _route.Route('/logout', 'LogoutController')).add(new _route.Route('/error'));
+
+/***/ }),
+
+/***/ "./src/erreurs/error.class.js":
+/*!************************************!*\
+  !*** ./src/erreurs/error.class.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+/**
+ * @name Error
+ * @desorc Contrôleur pour l'affichage des erreurs de routage
+ * @author Aélion
+ * @version 1.0.0
+ */
+var Error = exports.Error = function () {
+    function Error() {
+        _classCallCheck(this, Error);
+
+        // Définit la vue pour ce contrôleur
+        this.view = './src/errors/views/error.view.html';
+    }
+
+    /**
+     * Méthode pour récupérer la vue à afficher
+     */
+
+
+    _createClass(Error, [{
+        key: 'getView',
+        value: function getView() {
+            // Récupère le placeholder de mon application
+            var app = $('[app]');
+
+            $.get(this.view,
+            // Callback appelée après que le fichier ait été chargé
+            function (viewContent) {
+                app.empty(); // Vide le contenu le cas échéant
+                app.html(viewContent);
+            });
+        }
+    }]);
+
+    return Error;
+}();
 
 /***/ }),
 
@@ -144,8 +201,10 @@ var Menu = exports.Menu = function () {
     function Menu() {
         _classCallCheck(this, Menu);
 
-        this.options = [{ title: 'Accueil', active: 'always' }, { title: 'Toutes les stories', active: 'isAdmin' }, { title: 'Mes stories', active: 'always' }, {
-            title: 'Mon compte', active: 'always', options: [{ title: 'Mes préférences' }, { title: 'Changer de mot de passe' }, { divider: true }, { title: 'Déconnexion' }]
+        this.options = [
+        //On rajoute les voies, path
+        { title: 'Accueil', active: 'always', path: '/' }, { title: 'Toutes les stories', active: 'isAdmin', path: '/allstories' }, { title: 'Mes stories', active: 'always', path: '/mystories' }, {
+            title: 'Mon compte', active: 'always', options: [{ title: 'Mes préférences', path: '/settings' }, { title: 'Changer de mot de passe', path: '/changepassword' }, { divider: true }, { title: 'Déconnexion', path: '/logout' }]
         }];
     }
 
@@ -221,6 +280,25 @@ var Menu = exports.Menu = function () {
 
             dropdownBlock.removeClass('hidden');
         }
+
+        /**
+         * Nettoie le menu Utilisateur à la déconnexion
+         */
+
+    }, {
+        key: 'clear',
+        value: function clear() {
+            //On définit les options du menu
+            var dropdownBlock = $('#userMenuOptions');
+            //Virer les options existantes
+
+            dropdownBlock.empty();
+
+            dropdownBlock.addClass('hidden');
+
+            var userMenu = $('#userMenu');
+            userMenu.html('Utilisateur');
+        }
     }, {
         key: '_makeOption',
         value: function _makeOption(option) {
@@ -229,7 +307,8 @@ var Menu = exports.Menu = function () {
             if (option.hasOwnProperty('title')) {
                 //link logic here
                 item = $('<a>');
-                item.addClass('dropdown-item').attr('href', '#').html(option.title);
+                item.addClass('dropdown-item').attr('href', '#' + option.path) //on rajoute la voie pour obtenir la voie dans le lien html
+                .html(option.title);
 
                 //<a class="dropdown-item" href="#">Action</a>
             } else {
@@ -371,12 +450,18 @@ var _myStories = __webpack_require__(/*! ./../../stories/myStories.class */ "./s
 
 var _userService = __webpack_require__(/*! ./../../services/user-service.class */ "./src/services/user-service.class.js");
 
+var _logoutController = __webpack_require__(/*! ../../user/logout/logoutController.class */ "./src/user/logout/logoutController.class.js");
+
+var _error = __webpack_require__(/*! ./../../erreurs/error.class */ "./src/erreurs/error.class.js");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 //Créée une constante controllers qui contient les définitions des classes de tout les controleurs
 var controllers = {
     LoginController: _loginController.LoginController,
-    MyStories: _myStories.MyStories
+    LogoutController: _logoutController.LogoutController,
+    MyStories: _myStories.MyStories,
+    Error: _error.Error
 };
 
 var Router = exports.Router = function () {
@@ -419,7 +504,7 @@ var Router = exports.Router = function () {
             var controller = {};
 
             if (!route) {
-                // Aucun contrôleur associé à cette route
+                controller = new _error.Error();
             } else {
                 //si on a qqch, ca contient donc un objet de type route définit dans route.class.js
                 if (url === '/') {
@@ -456,7 +541,7 @@ var Router = exports.Router = function () {
                         controller = new controllers[route.getController()]();
                     }
                 }
-                //A la fin 
+                //A la fin, on charge la vue 
                 controller.getView();
             }
         }
@@ -573,42 +658,65 @@ var Toast = exports.Toast = function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
+exports.UserService = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @name UserService
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @desc Service de gestion de la persistence de l'utilisateur
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @author Aélion
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @version 1.0.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _user = __webpack_require__(/*! ../user/user.class */ "./src/user/user.class.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @name UserService
- * @desc Service de gestion de la persistence de l'utilisateur
- * @author Aélion
- * @version 1.0.0
- */
-
 var UserService = exports.UserService = function () {
-    function UserService() {
-        _classCallCheck(this, UserService);
+  function UserService() {
+    _classCallCheck(this, UserService);
+  }
+
+  /**
+   * Lit localStorage pour dire si on a un éventuel utilisateur ou non
+   * @return boolean
+   */
+
+  _createClass(UserService, [{
+    key: 'hasUser',
+    value: function hasUser() {
+      var user = JSON.parse(localStorage.getItem('storieUser'));
+      if (user) {
+        return true;
+      }
+      return false;
+    }
+  }, {
+    key: 'removeUser',
+    value: function removeUser() {
+      localStorage.removeItem('storieUser'); //removeItem fait partir la clé storieUser
+      this.user = {};
     }
 
     /**
-     * Lit localStorage pour récupérer un éventuel utilisateur
-     * @return boolean
+     * Retourne un objet Utiisateur à partir du localStorage
      */
 
-    _createClass(UserService, [{
-        key: 'hasUser',
-        value: function hasUser() {
-            var user = JSON.parse(localStorage.getItem('storieUser'));
-            if (user) {
-                return true;
-            }
-            return false;
-        }
-    }]);
+  }, {
+    key: 'getUser',
+    value: function getUser() {
 
-    return UserService;
+      var localUser = JSON.parse(localStorage.getItem('storieUser'));
+      var user = new _user.User();
+      user.setUserName(localUser.userName);
+      user.group = localUser.group;
+
+      return user;
+    }
+  }]);
+
+  return UserService;
 }();
 
 /***/ }),
@@ -626,23 +734,35 @@ var UserService = exports.UserService = function () {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+exports.MyStories = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @name MyStories
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @desc Contrôleur pour l'affichage des stories utilisateur
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @author Aélion
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @version 1.0.0
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
+
+var _menu = __webpack_require__(/*! ./../menu/menu.class */ "./src/menu/menu.class.js");
+
+var _userService = __webpack_require__(/*! ./../services/user-service.class */ "./src/services/user-service.class.js");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/**
- * @name MyStories
- * @desc Contrôleur pour l'affichage des stories utilisateur
- * @author Aélion
- * @version 1.0.0
- */
 var MyStories = exports.MyStories = function () {
     function MyStories() {
         _classCallCheck(this, MyStories);
 
         // Définit la vue pour ce contrôleur
         this.view = './src/stories/views/stories.view.html';
+
+        // On instance UserService (se charge de la relation localsotage et utilisateur)
+        // On instancie menu (met à jour menu)
+        // Pour mettre à jour menu, on met un utilisateur dedans que l'on prend dans userservice 
+
+        var userService = new _userService.UserService();
+        var menu = new _menu.Menu();
+        menu.setUser(userService.getUser());
     }
 
     /**
@@ -865,6 +985,69 @@ var LoginController = exports.LoginController = function () {
     }]);
 
     return LoginController;
+}();
+
+/***/ }),
+
+/***/ "./src/user/logout/logoutController.class.js":
+/*!***************************************************!*\
+  !*** ./src/user/logout/logoutController.class.js ***!
+  \***************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.LogoutController = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @name LogoutController
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @desc Contrôleur pour la déconnexion de l'utilisateur
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @author Aélion
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @version */
+
+var _loginController = __webpack_require__(/*! ./../login/loginController.class */ "./src/user/login/loginController.class.js");
+
+var _userService = __webpack_require__(/*! ../../services/user-service.class */ "./src/services/user-service.class.js");
+
+var _menu = __webpack_require__(/*! ../../menu/menu.class */ "./src/menu/menu.class.js");
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var LogoutController = exports.LogoutController = function () {
+    function LogoutController() {
+        _classCallCheck(this, LogoutController);
+
+        //Utilise le service pour supprimer la clé via user-service
+        var userService = new _userService.UserService();
+        userService.removeUser();
+
+        //Ne pas oublier de restaurer le menu et donc de virer les options via menu.class
+        var menu = new _menu.Menu();
+        menu.clear();
+
+        //Instancier la classe login pour la gestion du formulaire via controleur login
+
+        this.login = new _loginController.LoginController();
+    }
+
+    /**
+     * Méthode pour récupérer la vue à afficher
+     */
+
+    _createClass(LogoutController, [{
+        key: 'getView',
+        value: function getView() {
+
+            return this.login.getView();
+        }
+    }]);
+
+    return LogoutController;
 }();
 
 /***/ }),

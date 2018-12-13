@@ -9,11 +9,15 @@ import { Route } from './route.class';
 import { LoginController } from './../../user/login/loginController.class';
 import { MyStories } from './../../stories/myStories.class';
 import { UserService } from './../../services/user-service.class';
+import { LogoutController } from '../../user/logout/logoutController.class';
+import { Error } from './../../erreurs/error.class';
 
 //Créée une constante controllers qui contient les définitions des classes de tout les controleurs
 const controllers = {
     LoginController,
-    MyStories
+    LogoutController,
+    MyStories,
+    Error
 }
 
 export class Router {
@@ -59,7 +63,7 @@ export class Router {
 
 
         if (!route) {
-            // Aucun contrôleur associé à cette route
+           controller = new Error();
         } else { //si on a qqch, ca contient donc un objet de type route définit dans route.class.js
             if (url === '/') { //si la route est juste un /, on veut donc retourner à l'accueil de l'application.
                 //Soit on affiche formulaire de login, soit on affiche mes stories.
@@ -93,7 +97,7 @@ export class Router {
                     controller = new controllers[route.getController()]();
                 }
             }
-            //A la fin 
+            //A la fin, on charge la vue 
             controller.getView();
         }
 

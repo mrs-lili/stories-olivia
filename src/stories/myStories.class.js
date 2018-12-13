@@ -4,10 +4,21 @@
  * @author Aélion
  * @version 1.0.0
  */
+
+ import {Menu} from './../menu/menu.class';
+ import { UserService } from './../services/user-service.class';
 export class MyStories {
     constructor() {
         // Définit la vue pour ce contrôleur
         this.view = './src/stories/views/stories.view.html';
+
+// On instance UserService (se charge de la relation localsotage et utilisateur)
+// On instancie menu (met à jour menu)
+// Pour mettre à jour menu, on met un utilisateur dedans que l'on prend dans userservice 
+
+        const userService = new UserService();
+        const menu = new Menu();
+        menu.setUser(userService.getUser());
     }
 
     /**

@@ -8,15 +8,16 @@
 export class Menu {
     constructor() {
         this.options = [
-            { title: 'Accueil', active: 'always' },
-            { title: 'Toutes les stories', active: 'isAdmin' },
-            { title: 'Mes stories', active: 'always' },
+            //On rajoute les voies, path
+            { title: 'Accueil', active: 'always', path: '/' },
+            { title: 'Toutes les stories', active: 'isAdmin', path: '/allstories' },
+            { title: 'Mes stories', active: 'always', path: '/mystories' },
             {
                 title: 'Mon compte', active: 'always', options: [
-                    { title: 'Mes préférences' },
-                    { title: 'Changer de mot de passe' },
+                    { title: 'Mes préférences', path: '/settings' },
+                    { title: 'Changer de mot de passe', path: '/changepassword' },
                     { divider: true },
-                    { title: 'Déconnexion' }
+                    { title: 'Déconnexion', path: '/logout' }
                 ]
             }
         ];
@@ -69,6 +70,28 @@ export class Menu {
         //En fin de parcours, on affiche le menu
         dropdownBlock.removeClass('hidden');
     }
+
+    /**
+     * Nettoie le menu Utilisateur à la déconnexion
+     */
+
+    clear() {
+        //On définit les options du menu
+        const dropdownBlock = $('#userMenuOptions');
+        //Virer les options existantes
+
+        dropdownBlock.empty();
+
+        dropdownBlock.addClass('hidden');
+
+        const userMenu = $('#userMenu');
+        userMenu.html('Utilisateur');
+    }
+
+
+
+
+
     _makeOption(option) {
         let item = null;
 
@@ -77,7 +100,7 @@ export class Menu {
             item = $('<a>');
             item
                 .addClass('dropdown-item')
-                .attr('href', '#')
+                .attr('href', '#' + option.path) //on rajoute la voie pour obtenir la voie dans le lien html
                 .html(option.title);
 
             //<a class="dropdown-item" href="#">Action</a>
@@ -92,18 +115,18 @@ export class Menu {
         return item;
     }
 
-_activate() {
-    for (let option of this.options) {
-        const item = $('[title="' + option.title + '"]');
+    _activate() {
+        for (let option of this.options) {
+            const item = $('[title="' + option.title + '"]');
 
-        if (option.activate === 'always') {
-            item.removeClass('disabled');
-        } else if (this.options.active === 'isAdmin' && this.user.group === 'Administrateur') {
-            item.removeClass('disabled');
+            if (option.activate === 'always') {
+                item.removeClass('disabled');
+            } else if (this.options.active === 'isAdmin' && this.user.group === 'Administrateur') {
+                item.removeClass('disabled');
+            }
         }
-    }
 
-}
+    }
 }
 
 
