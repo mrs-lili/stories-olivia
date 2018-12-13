@@ -8,8 +8,8 @@
  export class Route {
      constructor(path, controller, canActivate = null) {
          this.path = path;
-         this.controller = controller
-         this.canActivate = canActivate
+         this.controller = controller;
+         this.canActivate = canActivate;
      }
 
      //canActivate=null veut dire que c'est un paramètre optionnel

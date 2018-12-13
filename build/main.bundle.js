@@ -440,7 +440,7 @@ var Router = exports.Router = function () {
                     console.log('Instancie :' + route.getController()); //Retourne le controller spécifié par le hash qu'on a trouvé.
                     //Ex si /mystories -> ca renvoie vers mystories
 
-                    var canActivate = route.getController(); //Demande si on peut prendre cette route pour l'utilisateur connecté
+                    var canActivate = route.getCanActivate(); //Demande si on peut prendre cette route pour l'utilisateur connecté
                     if (canActivate) {
                         //L'instanciation requiert une vérification
                         if (canActivate.hasUser()) {
@@ -842,10 +842,9 @@ var LoginController = exports.LoginController = function () {
         this.login = new _login.Login();
     }
 
-    /**
-     * Méthode pour récuperer la vue à afficher
-     * Il faut donc récuperer la vue, sous la forme d'élément html à injecter à notre page.
-     */
+    //Méthode pour récuperer la vue à afficher
+    //Il faut donc récuperer la vue, sous la forme d'élément html à injecter à notre page.
+
 
     _createClass(LoginController, [{
         key: 'getView',

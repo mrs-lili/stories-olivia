@@ -15,10 +15,10 @@ export class LoginController {
         this.login = new Login();
     }
 
-    /**
-     * Méthode pour récuperer la vue à afficher
-     * Il faut donc récuperer la vue, sous la forme d'élément html à injecter à notre page.
-     */
+
+    //Méthode pour récuperer la vue à afficher
+     //Il faut donc récuperer la vue, sous la forme d'élément html à injecter à notre page.
+   
 
     getView() {
         // Récupère le placeholder de mon application

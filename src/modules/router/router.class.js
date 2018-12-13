@@ -77,7 +77,7 @@ export class Router {
                 console.log('Instancie :' + route.getController()); //Retourne le controller spécifié par le hash qu'on a trouvé.
                 //Ex si /mystories -> ca renvoie vers mystories
 
-                const canActivate = route.getController(); //Demande si on peut prendre cette route pour l'utilisateur connecté
+                const canActivate = route.getCanActivate(); //Demande si on peut prendre cette route pour l'utilisateur connecté
                 if (canActivate) {
                     //L'instanciation requiert une vérification
                     if (canActivate.hasUser()) {
